@@ -2,11 +2,14 @@
 from struct import pack
 
 class Word(object): 
-    def __init__(self): 
-        self.val = 0 
+    def __init__(self, val=0): 
+        self.val = val
 
     def set_val(self, val): 
         self.val = val 
+
+    def get_vel(self, val): 
+        return self.val 
 
     def to_bytes(self):
         return pack('H', self.val) 
@@ -17,13 +20,12 @@ class AInst(object):
         self.symbol_table = symbol_table
     
     def to_bytes(self): 
-        word = Word() 
         if isinstance(int, self.imm): 
             val = imm
         else: 
             val = self.symbol_table.query(self.imm) 
 
-        word.set_val(val) 
+        word = Word(val) 
         return word.to_bytes() 
 
 class CInst(object): 
@@ -92,4 +94,24 @@ class CInst(object):
         word = Word() 
         word.set_val(val) 
         return word.to_bytes() 
+
+class SymbolTable(object): 
+    def __init__(self): 
+        self.table = {} 
+        self.alloc_addr = 16
+
+    def insert(self, symbol, addr): 
+        if addr: 
+            self.table[symbol] = addr
+            return addr 
+
+        self.table[symbol] = self.alloc_addr 
+        self.alloc_addr += 1 
+        return self.table[symbol] 
+
+    def query(self, symbol): 
+        if symbol in self.table: 
+            return self.table[symbol]
+        
+        return self.insert(symbol, None) 
 

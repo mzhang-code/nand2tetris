@@ -44,24 +44,11 @@ def test_parse():
                      '0000000000000000', 
                      '1110001100001000']
 
-    # Max.asm 
-    with open(os.path.join(TEST_DIR, 'asm', 'Max.asm'), 'r') as f:
-        lines = f.readlines() 
-        insts = parser.parse(lines) 
-        assert insts == ['0000000000000000',  
-                        '1111110000010000', 
-                        '0000000000000001', 
-                        '1111010011010000', 
-                        '0000000000001010', 
-                        '1110001100000001', 
-                        '0000000000000001', 
-                        '1111110000010000', 
-                        '0000000000001100', 
-                        '1110101010000111', 
-                        '0000000000000000', 
-                        '1111110000010000', 
-                        '0000000000000010', 
-                        '1110001100001000', 
-                        '0000000000001110', 
-                        '1110101010000111']
+    srcs = ['Max', 'MaxL']
+    for s in srcs: 
+        with open(os.path.join(TEST_DIR, 'asm', '%s.asm' %s), 'r') as fs, \
+                open(os.path.join(TEST_DIR, 'asm', '%s.hack' %s), 'r') as ft:
+            insts = parser.parse(fs.readlines()) 
+            targets = map(lambda l: l[:-1], ft.readlines())
+            assert insts == targets
 

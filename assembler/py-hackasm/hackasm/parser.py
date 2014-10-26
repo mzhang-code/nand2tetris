@@ -10,7 +10,7 @@ class Parser(object):
 
     def preprocess(self, lines): 
         remove_spaces = lambda l: re.sub(r'\s+', '', l.strip())
-        remove_comments = lambda l: re.sub(r'\\{2}\S+', '', l)
+        remove_comments = lambda l: re.sub(r'//\S+', '', l)
         exprs = map(remove_spaces, lines) 
         exprs = map(remove_comments, exprs) 
         return filter(lambda l: l, exprs) 
@@ -20,7 +20,7 @@ class Parser(object):
         exprs = self.preprocess(lines) 
         exprs = self.remove_labels(exprs) 
         insts = map(self.gen_inst, exprs) 
-        return ''.join(map(lambda inst: inst.to_bytes(), insts)) 
+        return map(lambda inst: inst.to_bytes(), insts)
 
     def is_a_inst(self, expr): 
         return '@' in expr 
@@ -35,7 +35,7 @@ class Parser(object):
         inst_cnt = 0 
         for e in exprs: 
             if self.is_label(e): 
-                symbol_table.insert(e[1:-1], inst_cnt) 
+                self.symbol_table.insert(e[1:-1], inst_cnt) 
             else: 
                 inst_cnt += 1 
         return filter(lambda e: not self.is_label(e), exprs) 
@@ -51,7 +51,7 @@ class Parser(object):
         if self.is_c_inst(expr): 
             jump = 'null' 
             if ';' in expr: 
-                jump = expr[expr.index(';')+1;] 
+                jump = expr[expr.index(';')+1:] 
                 expr = expr[:expr.index(';')] 
 
             dest = 'null' 

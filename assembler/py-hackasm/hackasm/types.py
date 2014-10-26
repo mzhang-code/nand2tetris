@@ -14,10 +14,11 @@ class Word(object):
                 buf += '1' 
             else: 
                 buf += '0' 
+            val /= 2
         self.buf = buf[:WORD_LEN][::-1] 
 
     def get_val(self): 
-        int val = 0
+        val = 0
         for b in self.buf: 
             val = val << 1 
             val += int(b)
@@ -32,8 +33,8 @@ class AInst(object):
         self.symbol_table = symbol_table
     
     def to_bytes(self): 
-        if isinstance(int, self.imm): 
-            val = imm
+        if isinstance(self.imm, int): 
+            val = self.imm
         else: 
             val = self.symbol_table.query(self.imm) 
 

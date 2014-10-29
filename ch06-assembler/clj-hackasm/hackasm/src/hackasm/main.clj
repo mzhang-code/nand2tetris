@@ -1,8 +1,9 @@
 (ns hackasm.main
+  (:require 
+    [hackasm.core :as core])
   (:gen-class))
 
 (defn -main
-  "This should be pretty simple."
   []
-  (println "Hello, World!"))
+  (core/foo "Mengyu Zhang")) 
 

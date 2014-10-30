@@ -2,14 +2,11 @@
   (:require [clojure.test :refer :all]
             [hackasm.core :refer :all]))
 
-(deftest a-test
-  (testing "FIXME, I fail."
-    (is (= 0 0))))
+(deftest remove-blank-test
+  (testing "remove-blank test"
+    (is (=  "@1//setAto1." (remove-blank "@1      // set A to 1. \n"))))) 
 
-(deftest gen-cinst-test 
-  (testing "Hi." 
-    ; 0;JMP 
-    (is (= "1110101010000111" (gen-cinst "0" "null" "JMP")))  
-    ; M=D
-    (is (= "1110001100001000" (gen-cinst "D" "M" "null"))))) 
+(deftest remove-comment-test
+  (testing "remove-comment test"
+    (is (=  "@1" (remove-comment "@1  // :-) set A to 1! \n"))))) 
 

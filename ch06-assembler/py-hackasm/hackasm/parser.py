@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*- 
+# Author    :   Mengyu Zhang (mengyuzhang@uchicago.edu) 
+# Date      :   Oct 30 2014 
 
 import re 
 from hackasm.types import AInst 

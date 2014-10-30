@@ -1,5 +1,6 @@
-
-from struct import pack
+# -*- coding: utf-8 -*- 
+# Author    :   Mengyu Zhang (mengyuzhang@uchicago.edu) 
+# Date      :   Oct 30 2014 
 
 WORD_LEN = 16
 
@@ -105,7 +106,16 @@ class CInst(object):
 
 class SymbolTable(object): 
     def __init__(self): 
-        self.table = {} 
+        self.table = {'SP'      : 0, 
+                      'LCL'     : 1, 
+                      'ARG'     : 2, 
+                      'THIS'    : 3, 
+                      'THAT'    : 4, 
+                      'SCREEN'  : 16384, 
+                      'KBD'     : 24576} 
+        for i in range(16): 
+            self.table['R'+str(i)] = i 
+
         self.alloc_addr = 16
 
     def insert(self, symbol, addr): 

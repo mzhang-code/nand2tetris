@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*- 
+# Author    :   Mengyu Zhang (mengyuzhang@uchicago.edu) 
+# Date      :   Oct 30 2014 
+
 import os 
 import pytest 
 
@@ -44,7 +48,7 @@ def test_parse():
                      '0000000000000000', 
                      '1110001100001000']
 
-    srcs = ['Max', 'MaxL']
+    srcs = ['Max', 'MaxL', 'Pong', 'PongL', 'Rect', 'RectL']
     for s in srcs: 
         with open(os.path.join(TEST_DIR, 'asm', '%s.asm' %s), 'r') as fs, \
                 open(os.path.join(TEST_DIR, 'asm', '%s.hack' %s), 'r') as ft:

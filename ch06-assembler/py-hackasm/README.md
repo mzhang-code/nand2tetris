@@ -1,11 +1,10 @@
 
-Py-hackasm
+py-hackasm
 ==========
 
-The **Hack** machine language assembler implemented in Python. 
+The **Hack** machine language assembler implemented in Python2.7. 
 
-The **README** is written in _Markdown_, for better reading experience, please
-redirect to github page https://github.com/my-zhang/nand2tetris/tree/master/ch06-assembler/py-hackasm
+This *README* is written in _Markdown_, for better reading experience, please redirect to github page https://github.com/my-zhang/nand2tetris/tree/master/ch06-assembler/py-hackasm
 
 ## Get Started 
 

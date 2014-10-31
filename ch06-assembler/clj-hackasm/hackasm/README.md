@@ -4,7 +4,7 @@ clj-hackasm
 
 A Clojure implementation of **Hack** assembler. 
 
-This *README* is written in _Markdown_, for better reading experience, please redirect to github page https://github.com/my-zhang/nand2tetris/tree/master/ch06-assembler/clj-hackasm
+This *README* is written in _Markdown_, for better reading experience, please redirect to github page https://github.com/my-zhang/nand2tetris/tree/master/ch06-assembler/clj-hackasm/hackasm
 
 ## Requirement 
 

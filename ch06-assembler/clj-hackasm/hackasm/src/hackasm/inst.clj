@@ -1,9 +1,8 @@
 (ns hackasm.inst 
-  (:require [clojure.string :as string])) 
+  (:require [clojure.string :as string]
+            [hackasm.symbol-table :refer :all])) 
 
 (def word-length 16) 
-
-(def symbol-table (atom {:alloc 16})) 
 
 (defn int-to-bits
   [x] 
@@ -17,24 +16,6 @@
     (< (count s) len) (str (apply str (repeat (- len (count s)) "0")) s) 
     :else s)) 
 
-(defn insert-symbol-table 
-  [sym & args] 
-  (cond 
-    (= 0 (count args)) 
-      (let 
-        [addr (:alloc @symbol-table)]
-        (swap! symbol-table assoc (keyword sym) addr)
-        (swap! symbol-table update-in [:alloc] inc)
-        addr) 
-    :else 
-      (swap! symbol-table assoc (keyword sym) (first args)))) 
-
-(defn query-symbol-table 
-  [sym] 
-  (cond 
-    (contains? @symbol-table (keyword sym)) ((keyword sym) @symbol-table)
-    :else (insert-symbol-table sym))) 
-
 (defn gen-ainst
   [addr] 
   (let 
@@ -47,7 +28,8 @@
       :else (gen-ainst (str (query-symbol-table addr)))))) 
 
 (def ctype-calc-table {:0     "0101010", 
-                       :-1    "0111111", 
+                       :1     "0111111", 
+                       :-1    "0111010", 
                        :D     "0001100",
                        :A     "0110000", 
                        :!D    "0001101",

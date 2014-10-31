@@ -11,7 +11,6 @@
     ; @14
     (is (= "0000000000001110" (gen-ainst "14"))))) 
 
-
 (deftest gen-cinst-test 
   (testing "gen-cinst test" 
     ; 0;JMP 

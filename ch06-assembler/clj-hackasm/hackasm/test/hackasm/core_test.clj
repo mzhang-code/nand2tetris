@@ -18,7 +18,8 @@
     (is (= "1110101010000111" (parse-line "0;JMP")))
     (is (= "1110001100001000" (parse-line "M=D"))))) 
 
-(def test-suits '("Max", "MaxL" "Pong" "PongL" "Rect", "RectL")) 
+(def test-suits 
+  '("Max", "MaxL" "Pong" "PongL" "Rect", "RectL", "Mult", "Fill")) 
 (def test-suit-dir "test/hackasm/asm/") 
 
 (deftest parse-test 

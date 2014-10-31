@@ -20,7 +20,7 @@ $ bash bin/hackasm.sh <asm_file>
 By default, the assembler print the machine code to the standard output, however we can simply redirect the output to target file. For example, 
 
 ```
-$ bash bin/hackasm.sh test/hackasm/asm/Rect.asm > Rect.hack 
+$ bash bin/hackasm.sh test/hackasm/asm/Rect._asm > Rect.hack 
 $ diff -u test/hackasm/asm/Rect.hack Rect.hack 
 ``` 
 

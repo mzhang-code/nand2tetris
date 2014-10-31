@@ -44,7 +44,7 @@ $ bash bin/hackasm.sh <asm_file> -o <hack_file>
 For example, the directory `test` contains all the test files, 
 
 ```
-$ bash bin/hackasm.sh test/asm/Pong.asm -o Pong.hack
+$ bash bin/hackasm.sh test/asm/Pong._asm -o Pong.hack
 $ diff -u test/asm/Pong.hack Pong.hack 
 ```
 

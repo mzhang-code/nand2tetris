@@ -24,7 +24,7 @@
 (deftest parse-test 
   (testing "" 
     (doseq [s test-suits] 
-        (with-open [source (io/reader (str test-suit-dir s ".asm"))
+        (with-open [source (io/reader (str test-suit-dir s "._asm"))
                     target (io/reader (str test-suit-dir s ".hack"))] 
           (is (= (line-seq target) (parse (line-seq source))))))))
       

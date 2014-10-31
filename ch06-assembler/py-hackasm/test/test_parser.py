@@ -11,7 +11,7 @@ TEST_DIR = os.path.dirname(__file__)
 
 def test_preprocess(): 
     parser = Parser() 
-    with open(os.path.join(TEST_DIR, 'asm', 'Max.asm'), 'r') as f:
+    with open(os.path.join(TEST_DIR, 'asm', 'Max._asm'), 'r') as f:
         lines = f.readlines() 
         mod_lines = parser.preprocess(lines) 
         assert mod_lines == [
@@ -50,7 +50,7 @@ def test_parse():
 
     srcs = ['Max', 'MaxL', 'Pong', 'PongL', 'Rect', 'RectL']
     for s in srcs: 
-        with open(os.path.join(TEST_DIR, 'asm', '%s.asm' %s), 'r') as fs, \
+        with open(os.path.join(TEST_DIR, 'asm', '%s._asm' %s), 'r') as fs, \
                 open(os.path.join(TEST_DIR, 'asm', '%s.hack' %s), 'r') as ft:
             insts = parser.parse(fs.readlines()) 
             targets = map(lambda l: l[:-1], ft.readlines())

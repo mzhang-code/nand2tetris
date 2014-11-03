@@ -64,7 +64,7 @@ $ hackasm -h
 
 ## Test 
 
-The projects contains nearly all the test cases. The testing requires `pytest`. 
+The project contains nearly all the test cases. The testing requires `pytest`. 
 
 ```
 $ sudo python setup.py clean --all 

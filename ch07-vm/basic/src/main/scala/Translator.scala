@@ -1,6 +1,6 @@
 import scala.io.Source
 
-object BasicTranslator {
+object Translator {
 
   def rmComment(s: String): String = { 
     val commentPattern = """\s*//.*""".r 

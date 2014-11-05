@@ -1,6 +1,7 @@
 (ns hackasm.core
   (:use [hackasm.inst :only [gen-ainst gen-cinst]]
-        [hackasm.symbol-table :only [init-symbol-table insert-symbol-table]])
+        [hackasm.symbol-table :only [init-symbol-table 
+                                     insert-symbol-table]])
   (:require [clojure.string :as string]))
 
 (defn remove-blank 
@@ -9,7 +10,7 @@
 
 (defn remove-comment
   [s]
-  (string/replace s #"//\S+" "")) 
+  (string/replace s #"\s*//.*" "")) 
 
 (defn parse-ainst 
   [expr] 
@@ -48,9 +49,12 @@
 
 (defn parse 
   [lines] 
-  (let 
-    [exprs (filter (fn [l] (< 0 (count l))) 
-                   (map remove-comment (map remove-blank lines)))] 
+  (do 
     (init-symbol-table) 
-    (map parse-line (preprocess exprs)))) 
+    (->> lines 
+         (map remove-comment) 
+         (map remove-blank) 
+         (filter (fn [l] (< 0 (count l))))
+         (preprocess) 
+         (map parse-line)))) 
 

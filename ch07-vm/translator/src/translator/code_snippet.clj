@@ -19,35 +19,35 @@
                              "D=A")
         (= seg "argument") `(~(str "@ARG") 
                              "D=M" 
-                             (str "@" index) 
+                             ~(str "@" index) 
                              "A=D+A" 
                              "D=M")
         (= seg "local")    `(~(str "@LCL") 
                              "D=M" 
-                             (str "@" index) 
+                             ~(str "@" index) 
                              "A=D+A" 
                              "D=M")
         (= seg "this")     `(~(str "@THIS") 
                              "D=M" 
-                             (str "@" index) 
+                             ~(str "@" index) 
                              "A=D+A" 
                              "D=M")
         (= seg "that")     `(~(str "@THAT") 
                              "D=M" 
-                             (str "@" index) 
+                             ~(str "@" index) 
                              "A=D+A" 
                              "D=M")
         (= seg "pointer")   `(~(str "@THIS") 
                               "D=A" 
-                              (str "@" index) 
+                              ~(str "@" index) 
                               "A=D+A" 
                               "D=M")
         (= seg "temp")      `("@R5"
                               "D=A" 
-                              (str "@" index) 
+                              ~(str "@" index) 
                               "A=D+A" 
                               "D=M")
-        (= seg "static")    `(~(str "@" env/cur-vm-file "." index) 
+        (= seg "static")    `(~(str "@" (env/cur-vm-file) "." index) 
                               "D=M"))
       assignment)))
 
@@ -75,7 +75,7 @@
         (= seg "static")    `("@SP" 
                               "AM=M-1"
                               "D=M" 
-                              ~(str "@" env/cur-vm-file "." index) 
+                              ~(str "@" (env/cur-vm-file) "." index) 
                               "M=D")))) 
 
 (defn unary-arith-code 
@@ -119,16 +119,16 @@
       "D=M" 
       "A=A-1"
       "D=M-D"
-      ~(str "@FALSE-" env/cur-vm-file "." index) 
+      ~(str "@FALSE-" (env/cur-vm-file) "." index) 
       ~(str "D;" op)
       "@SP" 
       "A=M-1" 
       "M=-1"
-      ~(str "@CONTINUE-" env/cur-vm-file "." index) 
+      ~(str "@CONTINUE-" (env/cur-vm-file) "." index) 
       "0;JMP" 
-      ~(str "(FALSE" env/cur-vm-file "." index ")")
+      ~(str "(FALSE" (env/cur-vm-file) "." index ")")
       "@SP" 
       "A=M-1" 
       "M=0"
-      ~(str "(CONTINUE" env/cur-vm-file "." index ")"))))
+      ~(str "(CONTINUE" (env/cur-vm-file) "." index ")"))))
 

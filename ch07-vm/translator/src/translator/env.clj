@@ -5,7 +5,12 @@
 
 (defn file-name
   [path] 
-  (first (reverse (string/split path #"/")))) 
+  (-> path 
+      (string/split #"/")
+      (reverse) 
+      (first) 
+      (string/split #"\.") 
+      (first))) 
 
 (defn set-vm-file! 
   [path] 

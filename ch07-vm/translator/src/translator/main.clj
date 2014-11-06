@@ -1,7 +1,8 @@
 (ns translator.main 
   (:require [clojure.java.io :as io] 
             [clojure.string :as string] 
-            [translator.core :as core]) 
+            [translator.core :as core]
+            [translator.env :as env]) 
   (:gen-class)) 
 
 (defn rm-comment 
@@ -29,6 +30,7 @@
 
 (defn -main 
   [file] 
+  (env/set-vm-file! file) 
   (with-open [rdr (io/reader file)] 
     (println (string/join "\n" (translate-exprs (line-seq rdr)))))) 
 

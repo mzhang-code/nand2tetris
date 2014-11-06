@@ -1,4 +1,9 @@
-(ns translator.code-snippet) 
+(ns translator.code-snippet
+  (:require [translator.env :as env])) 
+
+(defn init-code 
+  [] 
+  '("@256" "D=A" "@SP" "M=D")) 
 
 (defn push-code 
   [seg index]
@@ -12,27 +17,66 @@
       (cond 
         (= seg "constant") `(~(str "@" index) 
                              "D=A")
-        :else `(~(str "@" seg) 
-                "D=M" 
-                (str "@" index) 
-                "A=D+A" 
-                "D=M"))
+        (= seg "argument") `(~(str "@ARG") 
+                             "D=M" 
+                             (str "@" index) 
+                             "A=D+A" 
+                             "D=M")
+        (= seg "local")    `(~(str "@LCL") 
+                             "D=M" 
+                             (str "@" index) 
+                             "A=D+A" 
+                             "D=M")
+        (= seg "this")     `(~(str "@THIS") 
+                             "D=M" 
+                             (str "@" index) 
+                             "A=D+A" 
+                             "D=M")
+        (= seg "that")     `(~(str "@THAT") 
+                             "D=M" 
+                             (str "@" index) 
+                             "A=D+A" 
+                             "D=M")
+        (= seg "pointer")   `(~(str "@THIS") 
+                              "D=A" 
+                              (str "@" index) 
+                              "A=D+A" 
+                              "D=M")
+        (= seg "temp")      `("@R5"
+                              "D=A" 
+                              (str "@" index) 
+                              "A=D+A" 
+                              "D=M")
+        (= seg "static")    `(~(str "@" env/cur-vm-file "." index) 
+                              "D=M"))
       assignment)))
 
 (defn pop-code 
   [seg index] 
-  `(~(str "@" seg) 
-    "D=M" 
-    ~(str "@" index) 
-    "D=D+A" 
-    "@R13" 
-    "M=D" 
-    "@SP" 
-    "AM=M-1" 
-    "D=M" 
-    "@R13" 
-    "A=M" 
-    "M=D"))
+  (let 
+    [assignment `("D=M" 
+                  ~(str "@" index) 
+                  "D=D+A" 
+                  "@R13" 
+                  "M=D" 
+                  "@SP" 
+                  "AM=M-1" 
+                  "D=M" 
+                  "@R13" 
+                  "A=M" 
+                  "M=D")] 
+      (cond 
+        (= seg "local")     (concat '("@LCL")      assignment)    
+        (= seg "argument")  (concat '("@ARG")      assignment)
+        (= seg "this")      (concat '("@THIS")     assignment) 
+        (= seg "that")      (concat '("@THAT")     assignment)
+        (= seg "pointer")   (concat '("@POINTER")  assignment)  
+        (= seg "temp")      (concat '("@TEMP")     assignment) 
+        (= seg "static")    `("@SP" 
+                              "AM=M-1"
+                              "D=M" 
+                              ~(str "@" env/cur-vm-file "." index) 
+                              "M=D")))) 
 
 (defn unary-arith-code 
   [cmd] 
@@ -75,16 +119,16 @@
       "D=M" 
       "A=A-1"
       "D=M-D"
-      ~(str "@FALSE" index) 
+      ~(str "@FALSE-" env/cur-vm-file "." index) 
       ~(str "D;" op)
       "@SP" 
       "A=M-1" 
       "M=-1"
-      ~(str "@CONTINUE" index) 
+      ~(str "@CONTINUE-" env/cur-vm-file "." index) 
       "0;JMP" 
-      ~(str "(FALSE" index ")")
+      ~(str "(FALSE" env/cur-vm-file "." index ")")
       "@SP" 
       "A=M-1" 
       "M=0"
-      ~(str "(CONTINUE" index ")"))))
+      ~(str "(CONTINUE" env/cur-vm-file "." index ")"))))
 

@@ -2,7 +2,7 @@
   (:require [clojure.string :as string]
             [translator.code-snippet :as snippet])) 
 
-(def arith-exprs '("add" "sub" "lt" "gt" "eq" "neg" "and" "or")) 
+(def arith-exprs '("add" "sub" "lt" "gt" "eq" "neg" "not" "and" "or")) 
 
 (def memop-exprs '("pop" "push")) 
 

@@ -17,17 +17,17 @@
       (cond 
         (= seg "constant") `(~(str "@" index) 
                              "D=A")
-        (= seg "argument") `(~(str "@ARG") 
+        (= seg "argument") `("@ARG"
                              "D=M" 
                              ~(str "@" index) 
                              "A=D+A" 
                              "D=M")
-        (= seg "local")    `(~(str "@LCL") 
+        (= seg "local")    `("@LCL"
                              "D=M" 
                              ~(str "@" index) 
                              "A=D+A" 
                              "D=M")
-        (= seg "this")     `(~(str "@THIS") 
+        (= seg "this")     `("@THIS"
                              "D=M" 
                              ~(str "@" index) 
                              "A=D+A" 
@@ -37,11 +37,9 @@
                              ~(str "@" index) 
                              "A=D+A" 
                              "D=M")
-        (= seg "pointer")   `(~(str "@THIS") 
-                              "D=A" 
-                              ~(str "@" index) 
-                              "A=D+A" 
+        (= seg "pointer")   `(~(cond (= index "0") "@THIS" :else "@THAT") 
                               "D=M")
+
         (= seg "temp")      `("@R5"
                               "D=A" 
                               ~(str "@" index) 
@@ -70,8 +68,25 @@
         (= seg "argument")  (concat '("@ARG")      assignment)
         (= seg "this")      (concat '("@THIS")     assignment) 
         (= seg "that")      (concat '("@THAT")     assignment)
-        (= seg "pointer")   (concat '("@POINTER")  assignment)  
-        (= seg "temp")      (concat '("@TEMP")     assignment) 
+        (= seg "pointer")   `("@SP" 
+                              "AM=M-1" 
+                              "D=M" 
+                              ~(cond (= index "0") "@THIS" :else "@THAT")
+                              "M=D")
+
+        (= seg "temp")      `("@R5" 
+                              "D=A"
+                              ~(str "@" index)
+                              "D=D+A"
+                              "@R13" 
+                              "M=D" 
+                              "@SP" 
+                              "AM=M-1" 
+                              "D=M" 
+                              "@R13" 
+                              "A=M"
+                              "M=D") 
+
         (= seg "static")    `("@SP" 
                               "AM=M-1"
                               "D=M" 
@@ -126,9 +141,9 @@
       "M=-1"
       ~(str "@CONTINUE-" (env/cur-vm-file) "." index) 
       "0;JMP" 
-      ~(str "(FALSE" (env/cur-vm-file) "." index ")")
+      ~(str "(FALSE-" (env/cur-vm-file) "." index ")")
       "@SP" 
       "A=M-1" 
       "M=0"
-      ~(str "(CONTINUE" (env/cur-vm-file) "." index ")"))))
+      ~(str "(CONTINUE-" (env/cur-vm-file) "." index ")"))))
 

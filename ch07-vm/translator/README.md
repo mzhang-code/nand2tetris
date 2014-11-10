@@ -14,7 +14,7 @@ The project contains a pre-compiled jar file, thus there should be no need to ru
 Along with the source code, there's a compiled jar with all the dependencies, thus, just run the script on any *nix machine with jre installed. 
 
 ```
-$ cd translor
+$ cd translator
 $ bash bin/translator.sh <vm_file> 
 ``` 
 

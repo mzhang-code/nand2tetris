@@ -31,6 +31,7 @@
                   (map trim-expr) 
                   (rm-empty-lines) 
                   (map-indexed vector))] 
+      ; Pitfall here, stream closed due to lazyness. 
       (doall (mapcat #(apply core/translate-expr %) exprs))))) 
 
 (defn -main 

@@ -5,7 +5,5 @@
 
 (deftest a-test
   (testing "FIXME, I fail."
-    (pprint (translate-expr 0 "add"))
-    (print (translate-expr 0 "push constant 1024"))
     ))
 

@@ -1,8 +1,8 @@
-# VM Translator Part I 
+# VM Translator Part II
 
-The basic VM Translator that parses vm code into assembler. 
+The full-scale VM Translator that parses vm code into assembler. 
 
-This *README* is written in _Markdown_, for better reading experience, please redirect to github page https://github.com/my-zhang/nand2tetris/tree/master/ch07-vm/translator
+This *README* is written in _Markdown_, for better reading experience, please redirect to github page https://github.com/my-zhang/nand2tetris/tree/master/ch08-vm/translator
 
 ## Requirement 
 

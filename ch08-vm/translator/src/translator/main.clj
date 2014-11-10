@@ -1,8 +1,9 @@
 (ns translator.main 
-  (:require [clojure.java.io :as io] 
-            [clojure.string :as string] 
-            [translator.core :as core]
-            [translator.env :as env]) 
+  (:require [clojure.java.io          :as io] 
+            [clojure.string           :as string] 
+            [translator.core          :as core]
+            [translator.env           :as env]
+            [translator.code-snippet  :as code-snippet]) 
   (:gen-class)) 
 
 (defn rm-comment 
@@ -19,18 +20,28 @@
   [expr-str] 
   (string/replace expr-str #"(^\s+)|(\s+$)" "")) 
 
-(defn translate-exprs 
-  [lines] 
-  (->> lines 
-       (map rm-comment) 
-       (map trim-expr) 
-       (rm-empty-lines) 
-       (map-indexed vector) 
-       (mapcat (fn [args] (apply core/translate-expr args))))) 
+(defn translate-vm-file
+  [file] 
+  (with-open [rdr (io/reader file)] 
+    (env/set-vm-file! file) 
+    (let 
+      [exprs (->> rdr
+                  (line-seq) 
+                  (map rm-comment)
+                  (map trim-expr) 
+                  (rm-empty-lines) 
+                  (map-indexed vector))] 
+      (doall (mapcat #(apply core/translate-expr %) exprs))))) 
 
 (defn -main 
-  [file] 
-  (env/set-vm-file! file) 
-  (with-open [rdr (io/reader file)] 
-    (println (string/join "\n" (translate-exprs (line-seq rdr)))))) 
+  [proj-dir] 
+  (let 
+    [files (.list (io/file proj-dir))] 
+    (->> files 
+         (filter #(.endsWith % ".vm")) 
+         (map #(str proj-dir "/" %)) 
+         (mapcat #(translate-vm-file %)) 
+         (concat (code-snippet/init-code)) 
+         (string/join "\n") 
+         (println)))) 
 

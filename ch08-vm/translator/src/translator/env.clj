@@ -22,9 +22,11 @@
   (reset! func-name fname)) 
 
 (defn cur-vm-file 
+  "The current file name being parsed."
   [] 
   @vm-file) 
 
 (defn cur-func-name 
+  "The current function name being parsed."
   [] 
   @func-name) 

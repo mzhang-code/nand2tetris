@@ -12,6 +12,7 @@
   (string/replace line #"\s*//.*" "")) 
 
 (defn rm-empty-lines 
+  "Remove empty lines."
   [lines] 
   (filter (fn [l] (not (empty? l))) lines)) 
 
@@ -21,6 +22,7 @@
   (string/replace expr-str #"(^\s+)|(\s+$)" "")) 
 
 (defn translate-vm-file
+  "Translate a single vm file."
   [file] 
   (with-open [rdr (io/reader file)] 
     (env/set-vm-file! file) 
@@ -35,6 +37,8 @@
       (doall (mapcat #(apply core/translate-expr %) exprs))))) 
 
 (defn -main 
+  "Entry point of translator, 
+  of which the arg is a directory contains vm files" 
   [proj-dir] 
   (let 
     [files (.list (io/file proj-dir))] 

@@ -12,6 +12,7 @@
 (def flowc-exprs '("label" "goto" "if-goto")) 
 
 (defn translate-arith-expr
+  "Translate arithmetic expression." 
   [cmd index] 
   (cond 
     (some #(= cmd %) '("add" "sub" "and" "or")) (snippet/binary-arith-code cmd) 
@@ -19,6 +20,7 @@
     (some #(= cmd %) '("gt" "lt" "eq")) (snippet/binary-cmp-code cmd index)))
 
 (defn translate-memop-expr 
+  "Translate memory operation expression." 
   [cmd seg index] 
   (cond 
     (= cmd "push") 
@@ -27,6 +29,7 @@
       (snippet/pop-code seg index))) 
 
 (defn translate-fcall-expr 
+  "Translate function call expression." 
   [index cmd & args] 
   (cond 
     (= cmd "call") 
@@ -42,6 +45,7 @@
       (snippet/return-code))) 
 
 (defn translate-flowc-expr 
+  "Translate flow control expression." 
   [cmd target] 
   (cond 
     (= cmd "label") 

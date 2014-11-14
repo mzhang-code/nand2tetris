@@ -11,22 +11,63 @@ The project contains a pre-compiled jar file, thus there should be no need to ru
 
 ## Usage
 
-Along with the source code, there's a compiled jar with all the dependencies, thus, just run the script on any *nix machine with jre installed. 
+Along with the source code, there's a compiled jar with all the dependencies, thus, just run the script on any *nix machine with jre installed.
 
 ```
-$ cd translor
-$ bash bin/translator.sh <vm_file> 
+$ cd translator
+$ bash bin/translator.sh <directory>
 ``` 
 
 By default, the translator print the assembly code to the standard output, however we can simply redirect the output to target file. For example, 
 
 ```
-$ bash bin/translator.sh test/translator/vm/PointerTest.vm > PointerTest.asm
+$ bash bin/translator.sh test/translator/vm/FibonacciElement > FibonacciElement.asm
 ``` 
 
-## Test 
+## Structure 
 
-The test of this project cannot be done directly, which the `CPUEmulator` involves. Under the directory `test/translator/vm` there're generated asm files, which have successfully passed the test by `CPUEmulator`. 
+Project structure shows as follow, 
+
+```
+.
+└── translator
+    ├── LICENSE
+    ├── README.md
+    ├── bin
+    │   └── translator.sh
+    ├── doc
+    │   └── intro.md
+    ├── project.clj
+    ├── resources
+    ├── src
+    │   └── translator
+    │       ├── code_snippet.clj
+    │       ├── core.clj
+    │       ├── env.clj
+    │       └── main.clj
+    └── test
+        └── translator
+            ├── code_snippet_test.clj
+            ├── core_test.clj
+            ├── main_test.clj
+            └── vm
+                ├── FibonacciElement
+                │   ├── FibonacciElement.asm
+                │   ├── Main.vm
+                │   └── Sys.vm
+                └── StaticsTest
+                    ├── Class1.vm
+                    ├── Class2.vm
+                    ├── StaticsTest.asm
+                    ├── StaticsTest.cmp
+                    ├── StaticsTest.out
+                    ├── StaticsTest.tst
+                    ├── StaticsTestVME.tst
+                    └── Sys.vm
+
+```
+
+where `src/translator/main.clj` is the entry point of the translator, `core.clj` is contains marjor logic of parsing expressions and `code_snippet.clj` contains code segments for code generation. `test` directory contains several testcases, where there're also generated `*.asm` files. 
 
 ## License
 

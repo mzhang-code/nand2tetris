@@ -1,0 +1,115 @@
+
+class Tank { 
+	field int r, c, d; 
+	field Bullet b; 
+
+	field int length; 
+	field int width; 
+
+	constructor Tank new(int _r, int _c, int _d) { 
+		let r = _r; 
+		let c = _c; 
+		let d = _d; 
+		let b = Bullet.new(r, c, 0, d); 
+
+		let length = 27; 
+		let width = 9; 
+
+		do draw(); 
+		return this; 
+	}
+
+	method void draw() { 
+		do Screen.setColor(true); 
+
+		if ((d = 1) | (d = 2)) { 
+			do Screen.drawRectangle(r, c, r + width, c + length);
+			do Screen.drawRectangle(r + width, c + width, 
+					r + (2*width), c + (2*width));
+			do Screen.drawRectangle(r + (2*width), c, 
+					r + (3*width), c + (3*width));
+		}
+
+		else { 
+			do Screen.drawRectangle(r, c, r + length, c + width);
+			do Screen.drawRectangle(r + width, c + width, 
+					r + (2*width), c + (2*width));
+			do Screen.drawRectangle(r, c+ (2*width), 
+					r + (3*width), c + (3*width));
+		}
+
+		return; 
+	}
+
+	method void erase() { 
+		do Screen.setColor(false); 
+		do Screen.drawRectangle(r, c, r + length, c + length);
+		return; 
+	}
+	
+	method Bullet getBullet() { 
+		return b; 
+	}
+
+	method void fireBullet() { 
+		do b.setRow(r + (length / 2)); 
+		do b.setCol(c + (length / 2)); 
+		do b.setDir(d); 
+		do b.setSpeed(4); 
+		return; 
+	}
+
+	method void moveUp() { 
+		if (c > 1) { 
+			do erase(); 
+			let c = c - 2; 
+			do draw(); 
+		}
+		return; 
+	}
+	method void moveDown() { 
+		if (c + length < 254) { 
+			do erase(); 
+			let c = c + 2; 
+			do draw(); 
+		}
+		return; 
+	}
+	method void moveLeft() { 
+		if (r > 1) { 
+			do erase(); 
+			let r = r - 2; 
+			do draw(); 
+		}
+		return; 
+	}
+	method void moveRight() { 
+		if (r + length < 510) { 
+			do erase(); 
+			let r = r + 2; 
+			do draw(); 
+		}
+		return; 
+	}
+
+	method void setDir(int _d) { 
+		let d = _d; 
+		return; 
+	}
+
+	method int getDir() { 
+		return d; 
+	}
+	
+	method int getRow() { 
+		return r; 
+	}
+
+	method int getCol() { 
+		return c; 
+	}
+
+	method int getLength() { 
+		return length; 
+	}
+}

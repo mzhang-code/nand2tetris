@@ -1,0 +1,122 @@
+
+class Bullet { 
+	field int r, c, s, d; 
+
+	field int width; 
+
+	constructor Bullet new(int _r, int _c, int _s, int _d) { 
+		let r = _r; 
+		let c = _c; 
+		let s = _s; 
+		let d = _d; 
+
+		let width = 3; 
+
+		do draw(); 
+		return this; 
+	}
+	
+	method void draw() { 
+		if (s > 0) { 
+			do Screen.setColor(true); 
+			do Screen.drawRectangle(r, c, r + width, c + width);
+		}
+		return; 
+	}
+
+	method void erase() { 
+		if (s > 0) { 
+			do Screen.setColor(false); 
+			do Screen.drawRectangle(r, c, r + width, c + width);
+		}
+		return; 
+	}
+
+	method void moveUp() { 
+		if (c > s) { 
+			do erase(); 
+			let c = c - s; 
+			do draw(); 
+		}
+		else { 
+			do erase(); 
+			let s = 0; 
+		}
+		return; 
+	}
+
+	method void moveDown() { 
+		if ((c + width) < (255 - s)) { 
+			do erase(); 
+			let c = c + s; 
+			do draw(); 
+		}
+		else { 
+			do erase(); 
+			let s = 0; 
+		}
+		return; 
+	}
+
+	method void moveLeft() { 
+		if (r > s) { 
+			do erase(); 
+			let r = r - s; 
+			do draw(); 
+		}
+		else { 
+			do erase(); 
+			let s = 0; 
+		}
+		return; 
+	}
+
+	method void moveRight() { 
+		if ((r + width) < (512 - s)) { 
+			do erase(); 
+			let r = r + s; 
+			do draw(); 
+		}
+		else { 
+			do erase(); 
+			let s = 0; 
+		}
+		return; 
+	}
+
+	method int getRow() { 
+		return r; 
+	}
+
+	method void setRow(int _r) { 
+		let r = _r; 
+		return; 
+	}
+
+	method int getCol() { 
+		return c; 
+	}
+
+	method void setCol(int _c) { 
+		let c = _c; 
+		return; 
+	}
+
+	method int getSpeed() { 
+		return s; 
+	}
+
+	method void setSpeed(int _s) { 
+		let s = _s; 
+		return; 
+	}
+	
+	method int getDir() { 
+		return d; 
+	}
+
+	method void setDir(int _d) { 
+		let d = _d; 
+		return; 
+	}
+}

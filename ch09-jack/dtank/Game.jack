@@ -1,0 +1,145 @@
+
+class Game { 
+	field Tank p1, p2; 
+
+	constructor Game new() { 
+		let p1 = Tank.new(10, 10, 0); 
+		let p2 = Tank.new(200, 200, 0); 
+		return this; 
+	}
+
+	method void run() { 
+		var char key; 
+		var boolean exit; 
+		var boolean over; 
+		var Bullet b; 
+
+		let exit = false; 
+		let over = false; 
+
+		while (true) { 
+			while (key = 0) { 
+				let key = Keyboard.keyPressed(); 
+				do moveBullets(p1);
+				do moveBullets(p2);
+				let over = (checkHit(p1, p2) | checkHit(p2, p1)); 
+				// let over = checkHit(p1, p2); 
+				if (over) { 
+					do Sys.halt(); 
+				}
+				do moveTanks(p1); 
+				do moveTanks(p2); 
+			}
+
+			/* P key for player 1 fire. */ 
+			if (key = 80) { 
+				let b = p1.getBullet(); 
+				if (b.getSpeed() = 0) { 
+					do p1.fireBullet(); 
+				}
+			}
+
+			/* SPACE key for player 2 fire. */ 
+			if (key = 32) { 
+				let b = p2.getBullet(); 
+				if (b.getSpeed() = 0) { 
+					do p2.fireBullet(); 
+				}
+			}
+
+			/* arrow key navigation for player 1 */ 
+			if (key = 131) { 
+				do p1.setDir(1); 
+			}
+			if (key = 133) { 
+				do p1.setDir(2); 
+			}
+			if (key = 130) { 
+				do p1.setDir(3); 
+			}
+			if (key = 132) { 
+				do p1.setDir(4); 
+			}
+
+			/* ASWD key navigation for player 2 */ 
+			if (key = 87) { 
+				do p2.setDir(1); 
+			}
+			if (key = 83) { 
+				do p2.setDir(2); 
+			}
+			if (key = 65) { 
+				do p2.setDir(3); 
+			}
+			if (key = 68) { 
+				do p2.setDir(4); 
+			}
+			while (~(key = 0)) { 
+				let key = Keyboard.keyPressed(); 
+				do moveBullets(p1); 
+				do moveBullets(p2); 
+				// let over = checkHit(p1, p2); 
+				let over = (checkHit(p1, p2) | checkHit(p2, p1)); 
+				if (over) { 
+					do Sys.halt(); 
+				}
+				do moveTanks(p1); 
+				do moveTanks(p2); 
+			}
+		}
+		return; 
+	}
+
+	method boolean checkHit(Tank p1, Tank p2) { 
+		var Bullet b; 
+		let b = p2.getBullet(); 
+		if (b.getSpeed() > 0) { 
+			if ((b.getRow() > p1.getRow()) & 
+					(b.getRow() < (p1.getRow() + p1.getLength())) &
+					(b.getCol() > p1.getCol()) &
+					(b.getCol() < (p1.getCol() + p1.getLength()))) { 
+				return true; 
+			}
+		}
+		return false; 
+	}
+
+	method void moveTanks(Tank t) { 
+		if (t.getDir() = 1) { 
+			do t.moveUp(); 
+		}
+		if (t.getDir() = 2) { 
+			do t.moveDown(); 
+		}
+		if (t.getDir() = 3) { 
+			do t.moveLeft(); 
+		}
+		if (t.getDir() = 4) { 
+			do t.moveRight(); 
+		}
+		do Sys.wait(4); 
+		return; 
+	}
+
+	method void moveBullets(Tank t) { 
+		var Bullet b; 
+		let b = t.getBullet(); 
+
+		if (b.getSpeed() > 0) { 
+			if (b.getDir() = 1) { 
+				do b.moveUp(); 
+			}
+			if (b.getDir() = 2) { 
+				do b.moveDown(); 
+			}
+			if (b.getDir() = 3) { 
+				do b.moveLeft(); 
+			}
+			if (b.getDir() = 4) { 
+				do b.moveRight(); 
+			}
+		}
+		do Sys.wait(4); 
+		return; 
+	}
+}

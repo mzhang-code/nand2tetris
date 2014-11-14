@@ -1,0 +1,416 @@
+function Game.new 0
+push constant 2
+call Memory.alloc 1
+pop pointer 0
+push constant 10
+push constant 10
+push constant 0
+call Tank.new 3
+pop this 0
+push constant 200
+push constant 200
+push constant 0
+call Tank.new 3
+pop this 1
+push pointer 0
+return
+function Game.run 4
+push argument 0
+pop pointer 0
+push constant 0
+pop local 1
+push constant 0
+pop local 2
+label WHILE_EXP0
+push constant 0
+not
+not
+if-goto WHILE_END0
+label WHILE_EXP1
+push local 0
+push constant 0
+eq
+not
+if-goto WHILE_END1
+call Keyboard.keyPressed 0
+pop local 0
+push pointer 0
+push this 0
+call Game.moveBullets 2
+pop temp 0
+push pointer 0
+push this 1
+call Game.moveBullets 2
+pop temp 0
+push pointer 0
+push this 0
+push this 1
+call Game.checkHit 3
+push pointer 0
+push this 1
+push this 0
+call Game.checkHit 3
+or
+pop local 2
+push local 2
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+call Sys.halt 0
+pop temp 0
+label IF_FALSE0
+push pointer 0
+push this 0
+call Game.moveTanks 2
+pop temp 0
+push pointer 0
+push this 1
+call Game.moveTanks 2
+pop temp 0
+goto WHILE_EXP1
+label WHILE_END1
+push local 0
+push constant 80
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push this 0
+call Tank.getBullet 1
+pop local 3
+push local 3
+call Bullet.getSpeed 1
+push constant 0
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push this 0
+call Tank.fireBullet 1
+pop temp 0
+label IF_FALSE2
+label IF_FALSE1
+push local 0
+push constant 32
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push this 1
+call Tank.getBullet 1
+pop local 3
+push local 3
+call Bullet.getSpeed 1
+push constant 0
+eq
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push this 1
+call Tank.fireBullet 1
+pop temp 0
+label IF_FALSE4
+label IF_FALSE3
+push local 0
+push constant 131
+eq
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+push this 0
+push constant 1
+call Tank.setDir 2
+pop temp 0
+label IF_FALSE5
+push local 0
+push constant 133
+eq
+if-goto IF_TRUE6
+goto IF_FALSE6
+label IF_TRUE6
+push this 0
+push constant 2
+call Tank.setDir 2
+pop temp 0
+label IF_FALSE6
+push local 0
+push constant 130
+eq
+if-goto IF_TRUE7
+goto IF_FALSE7
+label IF_TRUE7
+push this 0
+push constant 3
+call Tank.setDir 2
+pop temp 0
+label IF_FALSE7
+push local 0
+push constant 132
+eq
+if-goto IF_TRUE8
+goto IF_FALSE8
+label IF_TRUE8
+push this 0
+push constant 4
+call Tank.setDir 2
+pop temp 0
+label IF_FALSE8
+push local 0
+push constant 87
+eq
+if-goto IF_TRUE9
+goto IF_FALSE9
+label IF_TRUE9
+push this 1
+push constant 1
+call Tank.setDir 2
+pop temp 0
+label IF_FALSE9
+push local 0
+push constant 83
+eq
+if-goto IF_TRUE10
+goto IF_FALSE10
+label IF_TRUE10
+push this 1
+push constant 2
+call Tank.setDir 2
+pop temp 0
+label IF_FALSE10
+push local 0
+push constant 65
+eq
+if-goto IF_TRUE11
+goto IF_FALSE11
+label IF_TRUE11
+push this 1
+push constant 3
+call Tank.setDir 2
+pop temp 0
+label IF_FALSE11
+push local 0
+push constant 68
+eq
+if-goto IF_TRUE12
+goto IF_FALSE12
+label IF_TRUE12
+push this 1
+push constant 4
+call Tank.setDir 2
+pop temp 0
+label IF_FALSE12
+label WHILE_EXP2
+push local 0
+push constant 0
+eq
+not
+not
+if-goto WHILE_END2
+call Keyboard.keyPressed 0
+pop local 0
+push pointer 0
+push this 0
+call Game.moveBullets 2
+pop temp 0
+push pointer 0
+push this 1
+call Game.moveBullets 2
+pop temp 0
+push pointer 0
+push this 0
+push this 1
+call Game.checkHit 3
+push pointer 0
+push this 1
+push this 0
+call Game.checkHit 3
+or
+pop local 2
+push local 2
+if-goto IF_TRUE13
+goto IF_FALSE13
+label IF_TRUE13
+call Sys.halt 0
+pop temp 0
+label IF_FALSE13
+push pointer 0
+push this 0
+call Game.moveTanks 2
+pop temp 0
+push pointer 0
+push this 1
+call Game.moveTanks 2
+pop temp 0
+goto WHILE_EXP2
+label WHILE_END2
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function Game.checkHit 1
+push argument 0
+pop pointer 0
+push argument 2
+call Tank.getBullet 1
+pop local 0
+push local 0
+call Bullet.getSpeed 1
+push constant 0
+gt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push local 0
+call Bullet.getRow 1
+push argument 1
+call Tank.getRow 1
+gt
+push local 0
+call Bullet.getRow 1
+push argument 1
+call Tank.getRow 1
+push argument 1
+call Tank.getLength 1
+add
+lt
+and
+push local 0
+call Bullet.getCol 1
+push argument 1
+call Tank.getCol 1
+gt
+and
+push local 0
+call Bullet.getCol 1
+push argument 1
+call Tank.getCol 1
+push argument 1
+call Tank.getLength 1
+add
+lt
+and
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 0
+not
+return
+label IF_FALSE1
+label IF_FALSE0
+push constant 0
+return
+function Game.moveTanks 0
+push argument 0
+pop pointer 0
+push argument 1
+call Tank.getDir 1
+push constant 1
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push argument 1
+call Tank.moveUp 1
+pop temp 0
+label IF_FALSE0
+push argument 1
+call Tank.getDir 1
+push constant 2
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push argument 1
+call Tank.moveDown 1
+pop temp 0
+label IF_FALSE1
+push argument 1
+call Tank.getDir 1
+push constant 3
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push argument 1
+call Tank.moveLeft 1
+pop temp 0
+label IF_FALSE2
+push argument 1
+call Tank.getDir 1
+push constant 4
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push argument 1
+call Tank.moveRight 1
+pop temp 0
+label IF_FALSE3
+push constant 4
+call Sys.wait 1
+pop temp 0
+push constant 0
+return
+function Game.moveBullets 1
+push argument 0
+pop pointer 0
+push argument 1
+call Tank.getBullet 1
+pop local 0
+push local 0
+call Bullet.getSpeed 1
+push constant 0
+gt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push local 0
+call Bullet.getDir 1
+push constant 1
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push local 0
+call Bullet.moveUp 1
+pop temp 0
+label IF_FALSE1
+push local 0
+call Bullet.getDir 1
+push constant 2
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push local 0
+call Bullet.moveDown 1
+pop temp 0
+label IF_FALSE2
+push local 0
+call Bullet.getDir 1
+push constant 3
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push local 0
+call Bullet.moveLeft 1
+pop temp 0
+label IF_FALSE3
+push local 0
+call Bullet.getDir 1
+push constant 4
+eq
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push local 0
+call Bullet.moveRight 1
+pop temp 0
+label IF_FALSE4
+label IF_FALSE0
+push constant 4
+call Sys.wait 1
+pop temp 0
+push constant 0
+return

@@ -1,8 +1,14 @@
 
+/* The class describe a tank in the game. */ 
+
 class Tank { 
+	/* coordination and direction */ 
 	field int r, c, d; 
+
+	/* the bullet belong to the tank */ 
 	field Bullet b; 
 
+	/* the geometry of the tank */ 
 	field int length; 
 	field int width; 
 

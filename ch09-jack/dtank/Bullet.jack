@@ -1,7 +1,11 @@
 
+/* The abstraction of a Bullet */ 
+
 class Bullet { 
+	/* postion, speed, and direction */ 
 	field int r, c, s, d; 
 
+	/* size */ 
 	field int width; 
 
 	constructor Bullet new(int _r, int _c, int _s, int _d) { 

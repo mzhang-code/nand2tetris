@@ -1,10 +1,10 @@
+/* The entry point of DTank */ 
 
 class Main { 
 	function void main() { 
 		var Game g; 
 		let g = Game.new(); 
 		do g.run(); 
-		
 		return; 
 	}
 }

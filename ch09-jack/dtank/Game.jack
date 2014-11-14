@@ -1,5 +1,9 @@
 
+/* The class listen for keyboard and schedule events for all 
+ * the components in the game. */ 
+
 class Game { 
+	/* Two Players */ 
 	field Tank p1, p2; 
 
 	constructor Game new() { 
@@ -90,6 +94,7 @@ class Game {
 		return; 
 	}
 
+	/* check whether p2's bullet is hitting p1 */ 
 	method boolean checkHit(Tank p1, Tank p2) { 
 		var Bullet b; 
 		let b = p2.getBullet(); 
@@ -104,6 +109,7 @@ class Game {
 		return false; 
 	}
 
+	/* move a tank */ 
 	method void moveTanks(Tank t) { 
 		if (t.getDir() = 1) { 
 			do t.moveUp(); 
@@ -121,6 +127,7 @@ class Game {
 		return; 
 	}
 
+	/* move a bullet if it has been fired */ 
 	method void moveBullets(Tank t) { 
 		var Bullet b; 
 		let b = t.getBullet(); 

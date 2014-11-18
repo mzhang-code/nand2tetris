@@ -21,12 +21,12 @@ class PyTest(TestCommand):
         sys.exit(errcode) 
 
 setup(
-    name           = 'compiler', 
+    name           = 'jcompiler', 
     version        = '0.0.1', 
     author         = 'Mengyu Zhang', 
-    packages       = ['compiler', 'test'], 
+    packages       = ['jcompiler', 'test'], 
     tests_require  = ['pytest'], 
-    entry_points   = {'console_scripts': ['compiler = compiler.cli:main']}, 
+    entry_points   = {'console_scripts': ['jcompiler = jcompiler.cli:main']}, 
     cmdclass       = {'test': PyTest}, 
     test_suite     = 'test', 
     extras_require = {'testing': ['pytest']} 

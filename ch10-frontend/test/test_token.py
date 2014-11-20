@@ -19,5 +19,6 @@ def test_tokenize():
                     
 def test_token_type():
     assert 'integerConstant' == token_type('123') 
-    assert 'StringConstant' == token_type('"hello world!"') 
+    assert 'stringConstant' == token_type('"hello world!"') 
     assert 'identifier' == token_type('foo') 
+    assert 'keyword' == token_type('void') 

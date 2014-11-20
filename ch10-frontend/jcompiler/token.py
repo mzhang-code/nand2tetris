@@ -27,7 +27,7 @@ def token_type(t):
     elif t in '{}()[].,;+-*/&|<>=~': 
         return 'symbol' 
     elif t.startswith('"') and t.endswith('"'): 
-        return 'StringConstant'
+        return 'stringConstant'
     else: 
         try: 
             int(t) 

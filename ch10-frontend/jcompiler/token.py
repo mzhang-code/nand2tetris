@@ -13,12 +13,12 @@ symbols = [r'\{', r'\}', r'\(', r'\)', r'\[', r'\]',
 
 integers = [r'\d+'] 
 
-strings = [r'"[^"]"'] 
+strings = [r'"[^"]*"'] 
 
 ids = [r'[a-zA-Z_]\w*'] 
 
 def tokenize(s): 
-    pattern = '|'.join(keywords + symbols + integers + strings + ids) 
+    pattern = '|'.join(strings + keywords + symbols + integers + ids) 
     return re.findall(pattern, s)
 
 def token_type(t): 

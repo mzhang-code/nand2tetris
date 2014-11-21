@@ -1,24 +1,25 @@
 
+import sys
 from jcompiler.token import token_stream
 from jcompiler.token import token_type
 
 class Parser(object): 
-    '''generate parse tree from token stream''' 
+    '''parsing phase of frontend''' 
 
-    def __init__(self): 
-        self.buf = '' 
-        self.lookahead = '' 
-
-    def match(self, t): 
-        self.lookahead = self.buf.next() 
-
-    def parse_tree(self, tokens): 
+    def __init__(self, tokens): 
         self.buf = token_stream(tokens) 
         self.lookahead = self.buf.next() 
-        return self.klass() 
 
-    def pack_node(self, *args): 
-        return list(args) 
+    def match(self, t): 
+        if t is not None and t != self.lookahead: 
+            raise ValueError(
+                    '[ERROR] "%s" is expected, while the buf is "%s".' 
+                    %(t, self.lookahead)) 
+        self.lookahead = self.buf.next() 
+
+    def parse_tree(self): 
+        '''return a parse tree by analyzing the input tokens'''
+        return self.klass() 
 
     def klass(self): 
         if self.lookahead == 'class': 
@@ -26,9 +27,9 @@ class Parser(object):
                     self.symbol()] + self.class_vars() + \
                     self.subroutines() + [self.symbol()] 
 
-    def keyword(self): 
+    def keyword(self, k=None): 
         t = self.lookahead 
-        self.match(t) 
+        self.match(k) 
         return ['keyword', t]
 
     def identifier(self): 
@@ -36,9 +37,9 @@ class Parser(object):
         self.match(t) 
         return ['identifier', t] 
 
-    def symbol(self): 
+    def symbol(self, s=None): 
         t = self.lookahead 
-        self.match(t) 
+        self.match(s) 
         return ['symbol', t] 
 
     def class_vars(self): 
@@ -57,6 +58,13 @@ class Parser(object):
     def class_name(self): 
         return self.identifier() 
 
+    def var_dec(self): 
+        node = ['varDec', self.symbol('var'), self.data_type(), 
+                self.var_name()] 
+        while self.lookahead == ',': 
+            node += [self.symbol(','), self.var_name()] 
+        return node + [self.symbol(';')] 
+
     def var_name(self): 
         return self.identifier() 
 
@@ -67,7 +75,7 @@ class Parser(object):
         '''zero or more var names'''
         t = self.lookahead
         if t == ',': 
-            return [self.symbol(), self.var_name()] + sef.var_names()
+            return [self.symbol(), self.var_name()] + self.var_names()
         else: 
             return [] 
 
@@ -99,8 +107,7 @@ class Parser(object):
         while self.lookahead == 'var': 
             node += [self.var_dec()] 
 
-        node += [self.statements()] 
-        node += [self.symbol()] 
+        node += [self.statements(), self.symbol()] 
         return node 
 
     def statements(self): 
@@ -125,35 +132,44 @@ class Parser(object):
             pass 
 
     def let_stmt(self): 
-        node = ['letStatement', self.var_name()] 
+        node =  ['letStatement', self.keyword('let'), self.var_name()] 
         if self.lookahead != '=': 
-            node += [self.symbol(), self.expression(), self. symbol()] 
-        node += [self.symbol(), self.expression(), self.symbol()] 
+            node += [self.symbol('['), self.expression(), self. symbol(']')] 
+        node += [self.symbol('='), self.expression(), self.symbol(';')] 
         return node
 
     def if_stmt(self): 
-        node = ['ifStatement', self.symbol(), self.expression(), 
-                self.symbol(), self.symbol(), self.statements(), 
-                self.symbol()] 
+        node =  ['ifStatement', self.keyword('if'), self.symbol('('), 
+                self.expression(), self.symbol(')'), self.symbol('{'), 
+                self.statements(), self.symbol('}')] 
         if self.lookahead == 'else': 
-            node += [self.keyword(), self.symbol(), self.statements(), 
-                    self.symbol()] 
+            node += [self.keyword('else'), self.symbol('{'), 
+                        self.statements(), self.symbol('}')] 
         return node 
 
     def while_stmt(self): 
-        return ['whileStatement', self.symbol(), self.expression(), 
-                self.symbol(), self.symbol(), self.statements(), 
-                self.symbol()] 
+        return ['whileStatement', self.keyword('while'), self.symbol(), 
+                self.expression(), self.symbol(), self.symbol(), 
+                self.statements(), self.symbol()] 
 
     def do_stmt(self): 
-        return  ['doStatement', self.keyword(), self.subroutine_call()] 
+        return  ['doStatement', self.keyword('do'), 
+                 self.identifier()] + self.subroutine_call()
 
     def ret_stmt(self): 
-        node = ['returnStatement', self.keyword()] 
-        if self.lookahead == ';': 
-            node += [self.symbol()] 
+        node = ['returnStatement', self.keyword('return')] 
+        if self.lookahead != ';': 
+            node += [self.expression()] 
         else: 
-            node += [self.expression(), self.symbol()] 
+            node += [self.symbol(';')] 
+        return node 
+
+    def subroutine_call(self): 
+        'code after the class name or func name' 
+        node = []
+        if self.lookahead == '.': 
+            node += [self.symbol('.'), self.identifier()] 
+        node += [self.symbol('('), self.expr_list(), self.symbol(')')] 
         return node 
 
     def expression(self): 
@@ -180,12 +196,11 @@ class Parser(object):
             node += [self.identifier()] 
             t = self.lookahead
             if t == '[': 
-                node += [self.symbol(), self.expression(), self.symbol()] 
-            elif t == '(': 
-                node += [self.symbol(), self.expr_list(), self.symbol()]
-            elif t == '.': 
-                node += [self.symbol(), self.identifier(), 
-                        self.symbol(), self.expr_list(), self.symbol()] 
+                node += [self.symbol('['), 
+                        self.expression(), self.symbol(']')] 
+            elif t in '.(': 
+                node += self.subroutine_call() 
+
             return node
 
     def expr_list(self): 

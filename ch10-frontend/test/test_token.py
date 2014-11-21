@@ -14,8 +14,9 @@ def test_tokenize():
     assert ['a'] == tokenize('a')  
     assert ['a', '='] == tokenize('a =')  
     assert ['let', 'a', '=', 'b', ';'] == tokenize('let a = b;')  
-    assert tokenize('class Foo { field int a = 404; }') == ['class', 'Foo', '{', 
-            'field', 'int', 'a', '=', '404', ';', '}']
+    assert tokenize('class Foo { field int a = 404; }') == ['class', 
+            'Foo', '{', 'field', 'int', 'a', '=', '404', ';', '}']
+    assert tokenize('"hello world."') == ['"hello world."'] 
                     
 def test_token_type():
     assert 'integerConstant' == token_type('123') 

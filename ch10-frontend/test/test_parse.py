@@ -12,8 +12,8 @@ def test_parse_tree():
             static char y; 
         }'''
     tokens = tokenize(source) 
-    parser = Parser()
-    assert parser.parse_tree(tokens) == \
+    parser = Parser(tokens)
+    assert parser.parse_tree() == \
             ['class', 
                 ['keyword', 'class'], 
                 ['identifier', 'Foo'],
@@ -40,8 +40,8 @@ def test_parse_tree():
             }
         }'''
     tokens = tokenize(source) 
-    parser = Parser()
-    assert parser.parse_tree(tokens) == \
+    parser = Parser(tokens)
+    assert parser.parse_tree() == \
             ['class', 
                 ['keyword', 'class'], 
                 ['identifier', 'Foo'],
@@ -76,4 +76,47 @@ def test_parse_tree():
                                 ['symbol', ';']]], 
                         ['symbol', '}']]], 
                 ['symbol', '}']] 
+
+    
+def test_if_stmt(): 
+    source = ''' 
+        if (x > 0) { 
+            let y = x + 1; 
+        }'''
+    tokens = tokenize(source) 
+    parser = Parser(tokens)
+
+    assert parser.if_stmt() == \
+            ['ifStatement', 
+                ['keyword', 'if'], 
+                ['symbol', '('], 
+                ['expression', 
+                    ['term', 
+                        ['identifier', 'x']], 
+                    ['symbol', '>'], 
+                    ['term', 
+                        ['integerConstant', '0']]], 
+                ['symbol', ')'], 
+                ['symbol', '{'], 
+                ['statements', 
+                    ['letStatement', 
+                        ['keyword', 'let'], 
+                        ['identifier', 'y'], 
+                        ['symbol', '='], 
+                        ['expression', 
+                            ['term', 
+                                ['identifier', 'x']], 
+                            ['symbol', '+'], 
+                            ['term', 
+                                ['integerConstant', '1']]], 
+                        ['symbol', ';']]], 
+                ['symbol', '}']] 
+
+
+def test_let_stmt(): 
+    source = 'let square = Square.new(0, 0, 30);' 
+    tokens = tokenize(source) 
+    parser = Parser(tokens)
+
+    print parser.let_stmt() 
 
